@@ -116,3 +116,11 @@ $ uv lock
 $ make list
 ...
 ```
+
+### Ссылки на схемы бэкенда
+
+[Схема локальной инсталляции бэкенда](https://gitlab.dvmn.org/root/fastapi-articles/-/wikis/fastai/backend_local_installation.drawio.png)
+
+[Схема продовой инсталляции бэкенда](https://gitlab.dvmn.org/root/fastapi-articles/-/wikis/fastai/backend_prod_installation.drawio.png)
+
+[Схема подсистем бэкенда](https://gitlab.dvmn.org/root/fastapi-articles/-/wikis/fastai/backend_decomposition.drawio.png)
