@@ -124,3 +124,16 @@ $ make list
 [Схема продовой инсталляции бэкенда](https://gitlab.dvmn.org/root/fastapi-articles/-/wikis/fastai/backend_prod_installation.drawio.png)
 
 [Схема подсистем бэкенда](https://gitlab.dvmn.org/root/fastapi-articles/-/wikis/fastai/backend_decomposition.drawio.png)
+
+
+### Как запустить фронтенд
+
+1. Скачать файлы фронтенда по [ссылке](https://dvmn.org/filer/canonical/1750917110/1035/)
+2. Выгрузить файлы в отдельную папку "frontend" внутри папки проекта.
+3. Внутри папки "frontend' создать файл "frontend-settings.json" с содержимым:
+```bash
+{
+    "backendBaseUrl": "/frontend-api/"
+}
+```
+4. При локальном запуске приложения стартовая страница будет отображаться по адресу http://127.0.0.1:8000/.
