@@ -1,9 +1,9 @@
 from fastapi import APIRouter, FastAPI
 from fastapi.staticfiles import StaticFiles
 
-app = FastAPI()
+app = FastAPI(root_path="/frontend-api")
 
-user_router = APIRouter(prefix="/frontend-api", tags=['users'])
+user_router = APIRouter(prefix="", tags=['users'])
 
 
 @user_router.get("/users/me")
