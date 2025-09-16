@@ -42,7 +42,7 @@ class SiteCreateRequest(BaseModel):
 
 
 class SiteGenerationRequest(BaseModel):
-    prompt: str
+    prompt: str | None = None
 
 
 class SiteCreateResponse(BaseModel):
@@ -122,7 +122,7 @@ def get_my_sites():
     data = {
         "createdAt": "2025-06-15T18:29:56+00:00",
         "htmlCodeDownloadUrl": "http://google.com/media/index.html?response-content-disposition=attachment",
-        "htmlCodeUrl": "http://google.com/media/index.html",
+        "htmlCodeUrl": "https://dvmn.org/media/filer_public/d1/4b/d14bb4e8-d8b4-49cb-928d-fd04ecae46da/index.html",
         "id": 1,
         "prompt": "Сайт любителей играть в домино",
         "screenshotUrl": "http://google.com/media/index.png",
