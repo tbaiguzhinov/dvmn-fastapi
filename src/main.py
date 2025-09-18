@@ -8,7 +8,16 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
+from env_settings import settings
+
 app = FastAPI(root_path="/frontend-api")
+
+print('DEBUG', settings.debug)
+print('DS API Key', settings.ds.api_key)
+print('DS Max Connections', settings.ds.max_connections)
+print('Unsplash API Key', settings.us.api_key)
+print("Unsplash Max Connections", settings.us.max_connections)
+print("Unsplash Timeout", settings.us.timeout)
 
 user_router = APIRouter(prefix="/users", tags=['users'])
 sites_router = APIRouter(prefix="/sites", tags=['sites'])
