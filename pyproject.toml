@@ -5,6 +5,7 @@ description = "FastApi Test Project from Devmand."
 readme = "README.md"
 requires-python = "==3.13.*"
 dependencies = [
+    "anyio>=4.9.0",
     "editorconfig-checker==3.2.1",
     "fastapi[standard]==0.115.12",
     "html-page-generator",
