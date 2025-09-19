@@ -3,6 +3,7 @@
 env/
 venv/
 frontend/
+generated/
 .idea/
 __pycache__
 tmp*

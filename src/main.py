@@ -1,23 +1,32 @@
-import asyncio
+from contextlib import asynccontextmanager
 from datetime import datetime
 
-import httpx
 from fastapi import APIRouter, Body, FastAPI, Path
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
+from html_page_generator import AsyncDeepseekClient, AsyncUnsplashClient
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
 from env_settings import settings
+from page_generator import generate_page
 
-app = FastAPI(root_path="/frontend-api")
 
-print('DEBUG', settings.debug)
-print('DS API Key', settings.ds.api_key)
-print('DS Max Connections', settings.ds.max_connections)
-print('Unsplash API Key', settings.us.api_key)
-print("Unsplash Max Connections", settings.us.max_connections)
-print("Unsplash Timeout", settings.us.timeout)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with (
+        AsyncUnsplashClient.setup(
+            settings.us.api_key.get_secret_value(),
+            timeout=3,
+        ),
+        AsyncDeepseekClient.setup(
+            settings.ds.api_key.get_secret_value(),
+        ),
+    ):
+        yield
+
+
+app = FastAPI(root_path="/frontend-api", lifespan=lifespan)
 
 user_router = APIRouter(prefix="/users", tags=['users'])
 sites_router = APIRouter(prefix="/sites", tags=['sites'])
@@ -91,9 +100,9 @@ def create_site(request: SiteCreateRequest):
     data = {
         "createdAt": "2025-06-15T18:29:56+00:00",
         "htmlCodeDownloadUrl": "http://google.com/media/index.html?response-content-disposition=attachment",
-        "htmlCodeUrl": "http://google.com/media/index.html",
+        "htmlCodeUrl": "/frontend-api/generated/index.html",
         "id": 1,
-        "prompt": "Сайт любителей играть в домино",
+        "prompt": request.prompt,
         "screenshotUrl": "http://google.com/media/index.png",
         "title": "Фан клуб Домино",
         "updatedAt": "2025-06-15T18:29:56+00:00",
@@ -101,27 +110,10 @@ def create_site(request: SiteCreateRequest):
     return data
 
 
-async def site_generation_mock():
-    try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get("https://dvmn.org/media/filer_public/d1/4b/d14bb4e8-d8b4-49cb-928d-fd04ecae46da/index.html")
-            data = response.text
-
-            chunk_size = 100
-            chunks = [data[i:i + chunk_size] for i in range(0, len(data), chunk_size)]
-
-            for _, chunk in enumerate(chunks):
-                await asyncio.sleep(0.1)
-                yield chunk
-
-    except Exception as e:
-        yield f"error: {str(e)}\n\n"
-
-
 @sites_router.post("/{site_id}/generate")
 async def generate_site(site_id: int = Path(..., gt=0), request: SiteGenerationRequest = Body(...)):
     return StreamingResponse(
-        content=site_generation_mock(),
+        content=generate_page(user_prompt=request.prompt),
         media_type="text/plain",
     )
 
@@ -131,7 +123,7 @@ def get_my_sites():
     data = {
         "createdAt": "2025-06-15T18:29:56+00:00",
         "htmlCodeDownloadUrl": "http://google.com/media/index.html?response-content-disposition=attachment",
-        "htmlCodeUrl": "https://dvmn.org/media/filer_public/d1/4b/d14bb4e8-d8b4-49cb-928d-fd04ecae46da/index.html",
+        "htmlCodeUrl": "/frontend-api/generated/index.html",
         "id": 1,
         "prompt": "Сайт любителей играть в домино",
         "screenshotUrl": "http://google.com/media/index.png",
@@ -159,6 +151,6 @@ def get_site(site_id: int = Path(..., gt=0)):
 app.include_router(user_router)
 app.include_router(sites_router)
 
+app.mount("/generated", StaticFiles(directory="generated"), name="generated")
 app.mount("/", StaticFiles(directory="frontend", html=True), name="site")
-
 app.mount("/assets", StaticFiles(directory="frontend/assets"), name="assets")
