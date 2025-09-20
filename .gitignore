@@ -4,6 +4,7 @@ env/
 venv/
 frontend/
 generated/
+data/
 .idea/
 __pycache__
 tmp*

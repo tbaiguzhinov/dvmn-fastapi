@@ -1,7 +1,8 @@
 from contextlib import asynccontextmanager
 from datetime import datetime
 
-from fastapi import APIRouter, Body, FastAPI, Path
+import aiofiles
+from fastapi import APIRouter, Body, Depends, FastAPI, Path
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from html_page_generator import AsyncDeepseekClient, AsyncUnsplashClient
@@ -9,6 +10,7 @@ from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
 from env_settings import settings
+from minio_service import MinioService
 from page_generator import generate_page
 
 
@@ -83,7 +85,7 @@ class MySitesResponse(BaseModel):
 
 
 @user_router.get("/me", response_model=UserModel)
-def get_user_info():
+async def get_user_info():
     data = {
         "email": "google@google.com",
         "isActive": True,
@@ -93,6 +95,14 @@ def get_user_info():
         "username": "user123",
     }
     return data
+
+
+@sites_router("/test-upload")
+async def test_upload(minio_service: MinioService = Depends(MinioService)):
+    async with aiofiles.open("generated/index.html", "rb") as file:
+        file_content = await file.read()
+        await minio_service.upload_file(file_content)
+    return {}
 
 
 @sites_router.post("/create", response_model=SiteCreateResponse)
