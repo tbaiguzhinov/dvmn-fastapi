@@ -137,3 +137,34 @@ $ make list
 }
 ```
 4. При локальном запуске приложения стартовая страница будет отображаться по адресу http://127.0.0.1:8000/.
+
+
+### Как запустить MinIO
+
+1. Установить локальную версию [MinIO](https://www.min.io/open-source/download).  
+2. Запустить MinIO локально командой:
+```brew
+minio server /path/to/data
+```
+3. Создайте бакет и сделайте его публичном с помощью серии команд:
+```bash
+mc alias set myminio http://localhost:9000 minioadmin minioadmin
+mc mb myminio/my-public-bucket
+mc anonymous set download myminio/my-public-bucket
+```
+3. Установить параметры виртуального окружения в файле .env.
+4. Для доступа к графическому интерфейсу пройдите по адресу http://localhost:9000
+
+### Загрузка файлов в MinIO
+#### Локально:
+1. Загрузите файлы `index.html` и `index.png` в бакет с помощью графического интерфейса.
+
+#### С помощью кода
+2. Загрузите файлы `index.html` и `index.png` в бакет командой:
+```bash
+mc cp --attr "Content-Disposition=inline; filename=\"index.html\"" index.html myminio/my-public-bucket/
+```
+
+3. Файлы будут доступны по адресам:
+- http://localhost:9000/my-public-bucket/index.html
+- http://localhost:9000/my-public-bucket/index.png

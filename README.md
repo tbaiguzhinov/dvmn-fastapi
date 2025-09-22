@@ -53,3 +53,20 @@ fastapi dev src/main.py
 
 - [Deepseek](https://api-docs.deepseek.com/)  
 - [Unsplash](https://unsplash.com/documentation#creating-a-developer-account)
+
+### Как запустить MinIO
+
+Для корректной работы приложения, необходимо запустить S3 хранилище MinIO.  
+
+1. Установить локальную версию [MinIO](https://www.min.io/open-source/download).  
+2. Запустить MinIO локально командой:
+```brew
+minio server /path/to/data
+```
+3. Создайте бакет и сделайте его публичном с помощью серии команд:
+```bash
+mc alias set myminio http://localhost:9000 minioadmin minioadmin
+mc mb myminio/my-public-bucket
+mc anonymous set download myminio/my-public-bucket
+```
+3. Установить параметры виртуального окружения в файле .env.
