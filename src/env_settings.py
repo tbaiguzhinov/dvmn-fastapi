@@ -13,6 +13,16 @@ class UnsplashSettings(BaseSettings):
     timeout: PositiveInt | None = None
 
 
+class MinioSettings(BaseSettings):
+    api_endpoint: str
+    login: str
+    password: SecretStr
+    bucket: str
+    connection_timeout: PositiveInt | None = 10
+    read_timeout: PositiveInt | None = 30
+    max_pool_connections: PositiveInt | None = 50
+
+
 class AppSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -26,6 +36,7 @@ class AppSettings(BaseSettings):
 
     ds: DeepSeekSettings
     us: UnsplashSettings
+    mn: MinioSettings
 
 
 settings = AppSettings()
