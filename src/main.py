@@ -1,8 +1,7 @@
 from contextlib import asynccontextmanager
 from datetime import datetime
 
-import aiofiles
-from fastapi import APIRouter, Body, Depends, FastAPI, Path
+from fastapi import APIRouter, Body, FastAPI, Path
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from html_page_generator import AsyncDeepseekClient, AsyncUnsplashClient
@@ -10,7 +9,6 @@ from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
 from env_settings import settings
-from minio_service import MinioService
 from page_generator import generate_page
 
 
@@ -97,20 +95,14 @@ async def get_user_info():
     return data
 
 
-@sites_router("/test-upload")
-async def test_upload(minio_service: MinioService = Depends(MinioService)):
-    async with aiofiles.open("generated/index.html", "rb") as file:
-        file_content = await file.read()
-        await minio_service.upload_file(file_content)
-    return {}
-
-
 @sites_router.post("/create", response_model=SiteCreateResponse)
 def create_site(request: SiteCreateRequest):
+    endpoint = settings.mn.api_endpoint
+    bucket = settings.mn.bucket
     data = {
         "createdAt": "2025-06-15T18:29:56+00:00",
-        "htmlCodeDownloadUrl": "http://google.com/media/index.html?response-content-disposition=attachment",
-        "htmlCodeUrl": "/frontend-api/generated/index.html",
+        "htmlCodeDownloadUrl": f"{endpoint}/{bucket}/index.html?response-content-disposition=attachment",
+        "htmlCodeUrl": f"{endpoint}/{bucket}/index.html",
         "id": 1,
         "prompt": request.prompt,
         "screenshotUrl": "http://google.com/media/index.png",
@@ -130,10 +122,12 @@ async def generate_site(site_id: int = Path(..., gt=0), request: SiteGenerationR
 
 @sites_router.get("/my", response_model=MySitesResponse)
 def get_my_sites():
+    endpoint = settings.mn.api_endpoint
+    bucket = settings.mn.bucket
     data = {
         "createdAt": "2025-06-15T18:29:56+00:00",
-        "htmlCodeDownloadUrl": "http://google.com/media/index.html?response-content-disposition=attachment",
-        "htmlCodeUrl": "/frontend-api/generated/index.html",
+        "htmlCodeDownloadUrl": f"{endpoint}/{bucket}/index.html?response-content-disposition=attachment",
+        "htmlCodeUrl": f"{endpoint}/{bucket}/index.html",
         "id": 1,
         "prompt": "Сайт любителей играть в домино",
         "screenshotUrl": "http://google.com/media/index.png",
@@ -145,10 +139,12 @@ def get_my_sites():
 
 @sites_router.get("/{site_id}", response_model=SiteCreateResponse)
 def get_site(site_id: int = Path(..., gt=0)):
+    endpoint = settings.mn.api_endpoint
+    bucket = settings.mn.bucket
     data = {
         "createdAt": "2025-06-15T18:29:56+00:00",
-        "htmlCodeDownloadUrl": "http://google.com/media/index.html?response-content-disposition=attachment",
-        "htmlCodeUrl": "http://google.com/media/index.html",
+        "htmlCodeDownloadUrl": f"{endpoint}/{bucket}/index.html?response-content-disposition=attachment",
+        "htmlCodeUrl": f"{endpoint}/{bucket}/index.html",
         "id": 1,
         "prompt": "Сайт любителей играть в домино",
         "screenshotUrl": "http://google.com/media/index.png",
