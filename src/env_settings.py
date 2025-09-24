@@ -33,10 +33,10 @@ class FormatEnum(str, Enum):
 
 class GotenbergSettings(BaseSettings):
     base_url: str
-    width: int
+    width: int = 1000
     format: FormatEnum = FormatEnum.JPEG
     wait_delay: int = 8
-    timeout: int = 10
+    timeout: int = 20
     max_connections: int = 5
 
 
