@@ -105,7 +105,7 @@ def create_site(request: SiteCreateRequest):
         "htmlCodeUrl": f"{endpoint}/{bucket}/index.html",
         "id": 1,
         "prompt": request.prompt,
-        "screenshotUrl": "http://google.com/media/index.png",
+        "screenshotUrl": f"{endpoint}/{bucket}/index.png",
         "title": "Фан клуб Домино",
         "updatedAt": "2025-06-15T18:29:56+00:00",
     }
@@ -115,7 +115,7 @@ def create_site(request: SiteCreateRequest):
 @sites_router.post("/{site_id}/generate")
 async def generate_site(site_id: int = Path(..., gt=0), request: SiteGenerationRequest = Body(...)):
     return StreamingResponse(
-        content=generate_page(user_prompt=request.prompt),
+        content=generate_page(user_prompt=request.prompt, debug=settings.debug),
         media_type="text/plain",
     )
 
@@ -130,7 +130,7 @@ def get_my_sites():
         "htmlCodeUrl": f"{endpoint}/{bucket}/index.html",
         "id": 1,
         "prompt": "Сайт любителей играть в домино",
-        "screenshotUrl": "http://google.com/media/index.png",
+        "screenshotUrl": f"{endpoint}/{bucket}/index.png",
         "title": "Фан клуб Домино",
         "updatedAt": "2025-06-15T18:29:56+00:00",
     }
@@ -147,7 +147,7 @@ def get_site(site_id: int = Path(..., gt=0)):
         "htmlCodeUrl": f"{endpoint}/{bucket}/index.html",
         "id": 1,
         "prompt": "Сайт любителей играть в домино",
-        "screenshotUrl": "http://google.com/media/index.png",
+        "screenshotUrl": f"{endpoint}/{bucket}/index.png",
         "title": "Фан клуб Домино",
         "updatedAt": "2025-06-15T18:29:56+00:00",
     }

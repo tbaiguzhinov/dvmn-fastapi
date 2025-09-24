@@ -1,3 +1,5 @@
+from enum import Enum
+
 from pydantic import PositiveInt, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -23,6 +25,21 @@ class MinioSettings(BaseSettings):
     max_pool_connections: PositiveInt | None = 50
 
 
+class FormatEnum(str, Enum):
+    JPEG = 'jpeg'
+    PNG = 'png'
+    WEBP = 'webp'
+
+
+class GotenbergSettings(BaseSettings):
+    base_url: str
+    width: int
+    format: FormatEnum = FormatEnum.JPEG
+    wait_delay: int = 8
+    timeout: int = 10
+    max_connections: int = 5
+
+
 class AppSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -37,6 +54,7 @@ class AppSettings(BaseSettings):
     ds: DeepSeekSettings
     us: UnsplashSettings
     mn: MinioSettings
+    gt: GotenbergSettings
 
 
 settings = AppSettings()
