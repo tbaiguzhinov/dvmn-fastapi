@@ -2,8 +2,8 @@ from fastapi import APIRouter, Body, Path
 from fastapi.responses import StreamingResponse
 
 from env_settings import settings
+from models.sites_models import MySitesResponse, SiteCreateRequest, SiteCreateResponse, SiteGenerationRequest
 from page_generator import generate_page
-from src.models.sites_models import MySitesResponse, SiteCreateRequest, SiteCreateResponse, SiteGenerationRequest
 
 sites_router = APIRouter(prefix="/sites", tags=['sites'])
 
