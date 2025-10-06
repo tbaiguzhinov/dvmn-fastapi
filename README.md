@@ -1,6 +1,9 @@
-# FastAPI test project
+# AI генератор сайтов
 
-## Тестовый проект на FastApi
+Данный проект является проектом ИИ генератора сайтов. После получения текстового описания задачи от пользователя, код отправляет запрос в ИИ DeepSeek, где происходит генерация html-кода вебсайта на заданную тему. С помощью Unsplash подбираются картинки, соответствующие теме. После завершение генерации, готовый код сохраняется локально, с помощью Gotenberg создается скриншот, и все сохраняется в S3 хранилище MinIO.
+
+
+## Порядок действий для запуска кода
 
 ### Локальный запуск
 
@@ -33,8 +36,8 @@ source .venv/bin/activate
 cp example.env .env
 ```
 
-!!! Не забудьте добавить файл .env в .gitignore.
-Информация, как получить API ключи для Deepseek и Unsplash ниже.
+Информация, как получить API ключи для Deepseek и Unsplash ниже.  
+Подробная информация о переменных окружения приведена ниже.  
 
 6. Запустить работу приложения командой:
 
@@ -54,19 +57,26 @@ fastapi dev src/main.py
 - [Deepseek](https://api-docs.deepseek.com/)  
 - [Unsplash](https://unsplash.com/documentation#creating-a-developer-account)
 
-### Как запустить MinIO
+### Переменные окружения
 
-Для корректной работы приложения, необходимо запустить S3 хранилище MinIO.  
+Для корректной работы кода, а также для более тонкой настройки используются следующие переменные окружения: 
 
-1. Установить локальную версию [MinIO](https://www.min.io/open-source/download).  
-2. Запустить MinIO локально командой:
-```brew
-minio server /path/to/data
-```
-3. Создайте бакет и сделайте его публичном с помощью серии команд:
-```bash
-mc alias set myminio http://localhost:9000 minioadmin minioadmin
-mc mb myminio/my-public-bucket
-mc anonymous set download myminio/my-public-bucket
-```
-3. Установить параметры виртуального окружения в файле .env.
+- DEBUG - работа в режиме дебага (True/False)
+- DS__API_KEY - API ключ от ИИ DeepSeek
+- DS__MAX_CONNECTIONS - (Опционально) Число максимальных соединений для ИИ DeepSeek
+- US__API_KEY - API ключ Unsplash
+- US__MAX_CONNECTIONS - (Опционально) Число максимальных соединений для Unsplash
+- US__TIMEOUT - (Опционально) Время таймаута подключения Unsplash
+- MN__API_ENDPOINT - Эндпойнт для API MinIO (http://localhost:9000 по умолчанию при работе локально)
+- MN__LOGIN - Логин для MinIO (minioadmin по умолчанию)
+- MN__PASSWORD - Пароль для MinIO (minioadmin по умолчанию)
+- MN__BUCKET - Имя бакета MinIO
+- MN__CONNECTION_TIMEOUT - (Опционально) Таймаут подключения (10 по умолчанию)
+- MN__READ_TIMEOUT - (Опционально) Таймаут чтения (30 по умолчанию)
+- MN__MAX_POOL_CONNECTIONS - (Опционально) Число максимальных соединений (50 по умолчанию)
+- GT__BASE_URL - Базовый урл для Gotenberg
+- GT__WIDTH - Ширина скришнота в пикселях для Gotenberg
+- GT__FORMAT - Формат скришнота (jpeg, png или webp, JPEG по умолчанию) для Gotenberg
+- GT__WAIT_DELAY - Время ожидания для завершения анимации для Gotenberg
+- GT__TIMEOUT - Время таймаута чтения для Gotenberg
+- GT__MAX_CONNECTIONS - Число максимальных соединений для Gotenberg
