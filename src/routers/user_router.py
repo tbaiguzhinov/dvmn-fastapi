@@ -5,7 +5,7 @@ from models.user_models import UserModel
 user_router = APIRouter(prefix="/users", tags=['users'])
 
 
-@user_router.get("/me", response_model=UserModel)
+@user_router.get("/me", response_model=UserModel, summary='Получить учетные данные пользователя')
 async def get_user_info():
     data = {
         "email": "google@google.com",
