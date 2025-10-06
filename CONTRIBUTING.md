@@ -117,11 +117,11 @@ $ make list
 
 ### Ссылки на схемы бэкенда
 
-[Схема локальной инсталляции бэкенда](https://gitlab.dvmn.org/root/fastapi-articles/-/wikis/fastai/backend_local_installation.drawio.png)
+[Схема локальной инсталляции бэкенда](https://github.com/tbaiguzhinov/dvmn-fastapi/raw/refs/heads/main/images/backend_local_installation.drawio.png)
 
-[Схема продовой инсталляции бэкенда](https://gitlab.dvmn.org/root/fastapi-articles/-/wikis/fastai/backend_prod_installation.drawio.png)
+[Схема продовой инсталляции бэкенда](https://github.com/tbaiguzhinov/dvmn-fastapi/raw/refs/heads/main/images/backend_prod_installation.drawio.png)
 
-[Схема подсистем бэкенда](https://gitlab.dvmn.org/root/fastapi-articles/-/wikis/fastai/backend_decomposition.drawio.png)
+[Схема подсистем бэкенда](https://github.com/tbaiguzhinov/dvmn-fastapi/raw/refs/heads/main/images/backend_decomposition.drawio.png)
 
 
 ### Как запустить фронтенд
