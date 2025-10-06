@@ -5,6 +5,9 @@ from pydantic.alias_generators import to_camel
 
 
 class SiteCreateRequest(BaseModel):
+    title: str | None = None
+    prompt: str
+
     model_config = ConfigDict(
         json_schema_extra={
             "google": {
@@ -13,8 +16,6 @@ class SiteCreateRequest(BaseModel):
             },
         },
     )
-    title: str | None = None
-    prompt: str
 
 
 class SiteGenerationRequest(BaseModel):
@@ -22,10 +23,6 @@ class SiteGenerationRequest(BaseModel):
 
 
 class SiteCreateResponse(BaseModel):
-    model_config = ConfigDict(
-        alias_generator=to_camel,
-        populate_by_name=True,
-    )
     created_at: datetime
     html_code_download_url: str
     html_code_url: str
@@ -34,6 +31,11 @@ class SiteCreateResponse(BaseModel):
     screenshot_url: str
     title: str
     updated_at: datetime
+
+    model_config = ConfigDict(
+        alias_generator=to_camel,
+        populate_by_name=True,
+    )
 
 
 class MySitesResponse(BaseModel):
