@@ -141,7 +141,7 @@ $ make list
 Gotenberg - сервис по генерации скриношотов сгенерированных веб-страниц.  
 Для корректной работы в .env необходимо указать хотя бы параметр базового урла для запроса:  
 ```bash
-GT__BASE_URL=https://demo.gotenberg.dev
+GOTENBERG__BASE_URL=https://demo.gotenberg.dev
 ```
 - это вариант работы с бесплатной версией.
 

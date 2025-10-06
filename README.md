@@ -62,21 +62,21 @@ fastapi dev src/main.py
 Для корректной работы кода, а также для более тонкой настройки используются следующие переменные окружения: 
 
 - DEBUG - работа в режиме дебага (True/False)
-- DS__API_KEY - API ключ от ИИ DeepSeek
-- DS__MAX_CONNECTIONS - (Опционально) Число максимальных соединений для ИИ DeepSeek
-- US__API_KEY - API ключ Unsplash
-- US__MAX_CONNECTIONS - (Опционально) Число максимальных соединений для Unsplash
-- US__TIMEOUT - (Опционально) Время таймаута подключения Unsplash
-- MN__API_ENDPOINT - Эндпойнт для API MinIO (http://localhost:9000 по умолчанию при работе локально)
-- MN__LOGIN - Логин для MinIO (minioadmin по умолчанию)
-- MN__PASSWORD - Пароль для MinIO (minioadmin по умолчанию)
-- MN__BUCKET - Имя бакета MinIO
-- MN__CONNECTION_TIMEOUT - (Опционально) Таймаут подключения (10 по умолчанию)
-- MN__READ_TIMEOUT - (Опционально) Таймаут чтения (30 по умолчанию)
-- MN__MAX_POOL_CONNECTIONS - (Опционально) Число максимальных соединений (50 по умолчанию)
-- GT__BASE_URL - Базовый урл для Gotenberg
-- GT__WIDTH - Ширина скришнота в пикселях для Gotenberg
-- GT__FORMAT - Формат скришнота (jpeg, png или webp, JPEG по умолчанию) для Gotenberg
-- GT__WAIT_DELAY - Время ожидания для завершения анимации для Gotenberg
-- GT__TIMEOUT - Время таймаута чтения для Gotenberg
-- GT__MAX_CONNECTIONS - Число максимальных соединений для Gotenberg
+- DEEPSEEK__API_KEY - API ключ от ИИ DeepSeek
+- DEEPSEEK__MAX_CONNECTIONS - (Опционально) Число максимальных соединений для ИИ DeepSeek
+- UNSPLASH__API_KEY - API ключ Unsplash
+- UNSPLASH__MAX_CONNECTIONS - (Опционально) Число максимальных соединений для Unsplash
+- UNSPLASH__TIMEOUT - (Опционально) Время таймаута подключения Unsplash
+- MINIO__API_ENDPOINT - Эндпойнт для API MinIO (http://localhost:9000 по умолчанию при работе локально)
+- MINIO__LOGIN - Логин для MinIO (minioadmin по умолчанию)
+- MINIO__PASSWORD - Пароль для MinIO (minioadmin по умолчанию)
+- MINIO__BUCKET - Имя бакета MinIO
+- MINIO__CONNECTION_TIMEOUT - (Опционально) Таймаут подключения (10 по умолчанию)
+- MINIO__READ_TIMEOUT - (Опционально) Таймаут чтения (30 по умолчанию)
+- MINIO__MAX_POOL_CONNECTIONS - (Опционально) Число максимальных соединений (50 по умолчанию)
+- GOTENBERG__BASE_URL - Базовый урл для Gotenberg
+- GOTENBERG__WIDTH - Ширина скришнота в пикселях для Gotenberg
+- GOTENBERG__FORMAT - Формат скришнота (jpeg, png или webp, JPEG по умолчанию) для Gotenberg
+- GOTENBERG__WAIT_DELAY - Время ожидания для завершения анимации для Gotenberg
+- GOTENBERG__TIMEOUT - Время таймаута чтения для Gotenberg
+- GOTENBERG__MAX_CONNECTIONS - Число максимальных соединений для Gotenberg

@@ -51,10 +51,10 @@ class AppSettings(BaseSettings):
     app_name: str = "My App"
     debug: bool = False
 
-    ds: DeepSeekSettings
-    us: UnsplashSettings
-    mn: MinioSettings
-    gt: GotenbergSettings
+    deepseek: DeepSeekSettings
+    unsplash: UnsplashSettings
+    minio: MinioSettings
+    gotenberg: GotenbergSettings
 
 
 settings = AppSettings()
