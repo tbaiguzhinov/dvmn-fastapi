@@ -1,6 +1,6 @@
 from enum import Enum
 
-from pydantic import PositiveInt, SecretStr
+from pydantic import HttpUrl, PositiveInt, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -16,7 +16,7 @@ class UnsplashSettings(BaseSettings):
 
 
 class MinioSettings(BaseSettings):
-    api_endpoint: str
+    api_endpoint: HttpUrl
     login: str
     password: SecretStr
     bucket: str
@@ -32,7 +32,7 @@ class FormatEnum(str, Enum):
 
 
 class GotenbergSettings(BaseSettings):
-    base_url: str
+    base_url: HttpUrl
     width: int = 1000
     format: FormatEnum = FormatEnum.JPEG
     wait_delay: int = 8
