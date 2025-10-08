@@ -1,7 +1,7 @@
 import logging
 
 import httpx
-from gotenberg_api import GotenbergServerError, ScreenshotHTMLRequest
+from gotenberg_api import ScreenshotHTMLRequest
 
 from env_settings import settings
 
@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class GotenbergService:
     def __init__(self):
-        self.base_url = settings.gotenberg.base_url
+        self.base_url = str(settings.gotenberg.base_url)
         self.timeout = settings.gotenberg.timeout
         self.width = settings.gotenberg.width
         self.format = settings.gotenberg.format
@@ -18,18 +18,14 @@ class GotenbergService:
         self.max_connections = settings.gotenberg.max_connections
 
     async def generate_image(self, raw_html: str):
-        try:
-            async with httpx.AsyncClient(
-                base_url=self.base_url,
-                timeout=self.timeout,
-            ) as client:
-                screenshot_bytes = await ScreenshotHTMLRequest(
-                    index_html=raw_html,
-                    width=self.width,
-                    format=self.format,
-                    wait_delay=self.wait_delay,
-                ).asend(client)
-        except GotenbergServerError as e:
-            logger.error(e)
-            screenshot_bytes = None
-        return screenshot_bytes
+        async with httpx.AsyncClient(
+            base_url=self.base_url,
+            timeout=self.timeout,
+        ) as client:
+            screenshot_bytes = await ScreenshotHTMLRequest(
+                index_html=raw_html,
+                width=self.width,
+                format=self.format,
+                wait_delay=self.wait_delay,
+            ).asend(client)
+            return screenshot_bytes

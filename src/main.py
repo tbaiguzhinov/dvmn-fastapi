@@ -6,12 +6,18 @@ from fastapi.staticfiles import StaticFiles
 from html_page_generator import AsyncDeepseekClient, AsyncUnsplashClient
 
 from env_settings import settings
+from gotenberg_service import GotenbergService
+from minio_service import MinioService
 from routers.sites_router import sites_router
 from routers.user_router import user_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Инициализируем сервисы один раз при старте приложения
+    app.state.minio_service = MinioService()
+    app.state.gotenberg_service = GotenbergService()
+
     async with (
         AsyncUnsplashClient.setup(
             settings.unsplash.api_key.get_secret_value(),

@@ -16,7 +16,7 @@ class MinioService:
         session = aioboto3.Session()
         async with session.client(
             's3',
-            endpoint_url=settings.minio.api_endpoint,
+            endpoint_url=str(settings.minio.api_endpoint),
             aws_access_key_id=settings.minio.login,
             aws_secret_access_key=settings.minio.password.get_secret_value(),
             region_name='us-east-1',
