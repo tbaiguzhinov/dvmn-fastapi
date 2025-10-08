@@ -14,11 +14,11 @@ from routers.user_router import user_router
 async def lifespan(app: FastAPI):
     async with (
         AsyncUnsplashClient.setup(
-            settings.us.api_key.get_secret_value(),
+            settings.unsplash.api_key.get_secret_value(),
             timeout=3,
         ),
         AsyncDeepseekClient.setup(
-            settings.ds.api_key.get_secret_value(),
+            settings.deepseek.api_key.get_secret_value(),
         ),
     ):
         yield

@@ -41,13 +41,6 @@ class GotenbergSettings(BaseSettings):
 
 
 class AppSettings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=False,
-        env_nested_delimiter="__",
-    )
-
     app_name: str = "My App"
     debug: bool = False
 
@@ -55,6 +48,13 @@ class AppSettings(BaseSettings):
     unsplash: UnsplashSettings
     minio: MinioSettings
     gotenberg: GotenbergSettings
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        env_nested_delimiter="__",
+    )
 
 
 settings = AppSettings()

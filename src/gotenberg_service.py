@@ -10,12 +10,12 @@ logger = logging.getLogger(__name__)
 
 class GotenbergService:
     def __init__(self):
-        self.base_url = settings.gt.base_url
-        self.timeout = settings.gt.timeout
-        self.width = settings.gt.width
-        self.format = settings.gt.format
-        self.wait_delay = settings.gt.wait_delay
-        self.max_connections = settings.gt.max_connections
+        self.base_url = settings.gotenberg.base_url
+        self.timeout = settings.gotenberg.timeout
+        self.width = settings.gotenberg.width
+        self.format = settings.gotenberg.format
+        self.wait_delay = settings.gotenberg.wait_delay
+        self.max_connections = settings.gotenberg.max_connections
 
     async def generate_image(self, raw_html: str):
         try:
