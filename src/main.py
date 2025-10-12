@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from html_page_generator import AsyncDeepseekClient, AsyncUnsplashClient
+from httpx import AsyncClient, Limits
 
 from env_settings import settings
 from gotenberg_service import GotenbergService
@@ -14,9 +15,13 @@ from routers.user_router import user_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Инициализируем сервисы один раз при старте приложения
     app.state.minio_service = MinioService()
-    app.state.gotenberg_service = GotenbergService()
+    httpx_gotenberg_client = AsyncClient(
+        base_url=str(settings.gotenberg.base_url),
+        timeout=settings.gotenberg.timeout,
+        limits=Limits(max_connections=settings.gotenberg.max_connections),
+    )
+    app.state.gotenberg_service = GotenbergService(httpx_gotenberg_client)
 
     async with (
         AsyncUnsplashClient.setup(
