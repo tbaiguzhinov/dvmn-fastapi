@@ -1,6 +1,8 @@
 import os
 from contextlib import asynccontextmanager
 
+import aioboto3
+from aiobotocore.config import AioConfig
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from html_page_generator import AsyncDeepseekClient, AsyncUnsplashClient
@@ -15,7 +17,23 @@ from routers.user_router import user_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    app.state.minio_service = MinioService()
+    s3_config = AioConfig(
+        max_pool_connections=settings.minio.max_pool_connections,
+        connect_timeout=settings.minio.connection_timeout,
+        read_timeout=settings.minio.read_timeout,
+    )
+    s3_session = aioboto3.Session()
+
+    app.state.minio_client = s3_session.client(
+        service_name='s3',
+        endpoint_url=str(settings.minio.api_endpoint),
+        aws_access_key_id=settings.minio.login,
+        aws_secret_access_key=settings.minio.password.get_secret_value(),
+        region_name='us-east-1',
+        config=s3_config,
+    )
+    app.state.minio_service = MinioService(app.state.minio_client)
+
     httpx_gotenberg_client = AsyncClient(
         base_url=str(settings.gotenberg.base_url),
         timeout=settings.gotenberg.timeout,
