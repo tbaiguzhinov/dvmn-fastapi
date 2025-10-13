@@ -59,8 +59,8 @@ async def generate_site(
     return StreamingResponse(
         content=generate_page(
             user_prompt=request.prompt,
-            minio_service=request_obj.app.state.minio_service,
-            gotenberg_service=request_obj.app.state.gotenberg_service,
+            minio_client=request_obj.app.state.minio_client,
+            gotenberg_client=request_obj.app.state.gotenberg_client,
             debug=settings.debug,
         ),
         media_type="text/plain",

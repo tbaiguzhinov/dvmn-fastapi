@@ -9,8 +9,6 @@ from html_page_generator import AsyncDeepseekClient, AsyncUnsplashClient
 from httpx import AsyncClient, Limits
 
 from env_settings import settings
-from gotenberg_service import GotenbergService
-from minio_service import MinioService
 from routers.sites_router import sites_router
 from routers.user_router import user_router
 
@@ -32,14 +30,13 @@ async def lifespan(app: FastAPI):
         region_name='us-east-1',
         config=s3_config,
     )
-    app.state.minio_service = MinioService(app.state.minio_client)
 
-    httpx_gotenberg_client = AsyncClient(
+    gotenberg_client = AsyncClient(
         base_url=str(settings.gotenberg.base_url),
         timeout=settings.gotenberg.timeout,
         limits=Limits(max_connections=settings.gotenberg.max_connections),
     )
-    app.state.gotenberg_service = GotenbergService(httpx_gotenberg_client)
+    app.state.gotenberg_client = gotenberg_client
 
     async with (
         AsyncUnsplashClient.setup(
@@ -50,7 +47,10 @@ async def lifespan(app: FastAPI):
             settings.deepseek.api_key.get_secret_value(),
         ),
     ):
-        yield
+        try:
+            yield
+        finally:
+            await gotenberg_client.aclose()
 
 
 app = FastAPI(root_path="/frontend-api", lifespan=lifespan)
