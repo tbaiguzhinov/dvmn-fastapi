@@ -47,10 +47,8 @@ async def lifespan(app: FastAPI):
             settings.deepseek.api_key.get_secret_value(),
         ),
     ):
-        try:
-            yield
-        finally:
-            await gotenberg_client.aclose()
+        yield
+        await gotenberg_client.aclose()
 
 
 app = FastAPI(root_path="/frontend-api", lifespan=lifespan)
